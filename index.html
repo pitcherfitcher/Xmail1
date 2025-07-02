@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMail Mobile - The Future of Email</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Mobile Container */
+        .mobile-container {
+            width: 100%;
+            max-width: 375px;
+            height: 812px;
+            background: #000000;
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            background: #000000;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .signal-dots {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .signal-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+        
+        .battery {
+            width: 24px;
+            height: 12px;
+            border: 1px solid #ffffff;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .battery::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 3px;
+            width: 2px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 0 1px 1px 0;
+        }
+        
+        .battery-fill {
+            width: 80%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 1px;
+        }
+        
+        /* Mobile Header */
+        .mobile-header {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid #2f3336;
+            background: #000000;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+        
+        .profile-avatar-mobile {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1da1f2, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .profile-avatar-mobile:hover {
+            transform: scale(1.05);
+        }
+        
+        .x-mail-badge-mobile {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background: #1da1f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 700;
+            border: 2px solid #000;
+        }
+        
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        /* Search Bar */
+        .search-bar-mobile {
+            padding: 12px 20px;
+            background: #000000;
+        }
+        
+        .search-input-mobile {
+            width: 100%;
+            background: #202327;
+            border: 1px solid #2f3336;
+            border-radius: 20px;
+            padding: 10px 16px 10px 40px;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+            position: relative;
+        }
+        
+        .search-container-mobile {
+            position: relative;
+        }
+        
+        .search-icon-mobile {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #71767b;
+        }
+        
+        /* Mobile Sidebar Drawer */
+        .sidebar-drawer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 70%;
+            height: 100%;
+            background: #000000;
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            border-right: 1px solid #2f3336;
+            visibility: hidden;
+        }
+        
+        .sidebar-drawer.show {
+            transform: translateX(0);
+            visibility: visible;
+        }
+        
+        .sidebar-drawer::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .sidebar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-header {
+            padding: 80px 20px 20px 20px;
+            border-bottom: 1px solid #2f3336;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .sidebar-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1da1f2, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: white;
+            position: relative;
+        }
+        
+        .sidebar-avatar-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            background: #1da1f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            border: 2px solid #000;
+        }
+        
+        .sidebar-profile-details {
+            flex: 1;
+        }
+        
+        .sidebar-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+        
+        .sidebar-email {
+            font-size: 14px;
+            color: #71767b;
+        }
+        
+        .sidebar-settings {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-settings:hover {
+            background: rgba(113, 118, 123, 0.1);
+        }
+        
+        .sidebar-settings svg {
+            transition: all 0.2s;
+        }
+        
+        .sidebar-settings:hover svg {
+            fill: #ffffff;
+        }
+        
+        .sidebar-section {
+            padding: 16px 0;
+        }
+        
+        .sidebar-section-title {
+            padding: 0 20px 12px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #71767b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            gap: 16px;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(15, 20, 25, 0.1);
+        }
+        
+        .sidebar-item.active {
+            background: rgba(29, 161, 242, 0.1);
+            color: #1da1f2;
+            font-weight: 600;
+        }
+        
+        .sidebar-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: currentColor;
+        }
+        
+        .sidebar-text {
+            flex: 1;
+        }
+        
+        .sidebar-count {
+            background: rgba(29, 161, 242, 0.1);
+            color: #1da1f2;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Custom dot for folders */
+        .sidebar-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #71767b;
+        }
+        
+        /* Contact avatar styles */
+        .contact-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .contact-avatar.tim {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+        
+        .contact-avatar.jeff {
+            background: linear-gradient(45deg, #a8e6cf, #dcedc1);
+        }
+        
+        .contact-avatar.gwynne {
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+        }
+        
+        .add-folder-btn {
+            color: #71767b;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-folder-btn:hover {
+            color: #1da1f2;
+        }
+        
+        .email-list-mobile {
+            flex: 1;
+            overflow-y: auto;
+            background: #000000;
+        }
+        
+        .email-list-mobile::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .email-item-mobile {
+            padding: 16px 20px;
+            border-bottom: 1px solid #2f3336;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .email-item-mobile:hover,
+        .email-item-mobile:active {
+            background: rgba(15, 20, 25, 0.1);
+        }
+        
+        .email-item-mobile.unread {
+            background: rgba(29, 161, 242, 0.03);
+            border-left: 3px solid #1da1f2;
+            transition: all 0.3s ease;
+        }
+        
+        .email-item-mobile.read {
+            background: #000000;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .email-header-mobile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .sender-avatar-mobile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .email-meta-mobile {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .sender-info-mobile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        
+        .sender-name-mobile {
+            font-weight: 700;
+            font-size: 15px;
+            color: #ffffff;
+        }
+        
+        .verified-badge-mobile {
+            color: #1da1f2;
+            font-size: 12px;
+        }
+        
+        .email-time-mobile {
+            font-size: 13px;
+            color: #71767b;
+            margin-left: auto;
+        }
+        
+        .email-subject-mobile {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .email-preview-mobile {
+            font-size: 14px;
+            color: #71767b;
+            line-height: 1.4;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        /* Email Detail Mobile */
+        .email-detail-mobile {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000000;
+            z-index: 500;
+            display: none;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .email-detail-mobile.show {
+            display: flex;
+            transform: translateX(0);
+        }
+        
+        .email-detail-header-mobile {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid #2f3336;
+            background: #000000;
+        }
+        
+        .back-btn-mobile {
+            background: none;
+            border: none;
+            color: #1da1f2;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 16px;
+        }
+        
+        .email-detail-title-mobile {
+            flex: 1;
+        }
+        
+        .email-detail-content-mobile {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .email-full-header-mobile {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #2f3336;
+        }
+        
+        .email-full-subject-mobile {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        
+        .email-full-meta-mobile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .email-full-body-mobile {
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .email-full-body-mobile p {
+            margin-bottom: 16px;
+        }
+        
+        .email-full-body-mobile ul {
+            margin: 16px 0;
+            padding-left: 20px;
+        }
+        
+        .email-full-body-mobile li {
+            margin-bottom: 8px;
+        }
+        
+        /* Reply Section Mobile */
+        .reply-section-mobile {
+            background: #000000;
+            border-top: 1px solid #2f3336;
+            padding: 16px 20px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
+        }
+        
+        .reply-input-container-mobile {
+            background: #202327;
+            border: 1px solid #2f3336;
+            border-radius: 20px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            min-height: 44px;
+        }
+        
+        .reply-input-container-mobile:focus-within {
+            border-color: #1da1f2;
+        }
+        
+        .reply-input-mobile {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            min-height: 20px;
+            max-height: 120px;
+            font-family: inherit;
+            line-height: 1.4;
+        }
+        
+        .reply-input-mobile::placeholder {
+            color: #71767b;
+        }
+        
+        .reply-actions-mobile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .reply-btn-mobile {
+            background: none;
+            border: none;
+            color: #71767b;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reply-btn-mobile:hover {
+            background: rgba(29, 161, 242, 0.1);
+            color: #1da1f2;
+        }
+        
+        .grok-btn-mobile {
+            background: #ffffff;
+            color: #000000;
+        }
+        
+        .grok-btn-mobile:hover {
+            background: #f7f9fa;
+        }
+        
+        .send-btn-mobile {
+            background: #1da1f2;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .send-btn-mobile:hover {
+            background: #1991da;
+        }
+        
+        .send-btn-mobile:disabled {
+            background: #2f3336;
+            color: #71767b;
+            cursor: not-allowed;
+        }
+        
+        /* Floating Action Button Mobile */
+        .fab-mobile {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #1da1f2;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(29, 161, 242, 0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fab-mobile:hover {
+            transform: scale(1.05);
+            background: #1991da;
+        }
+        
+        /* Grok Assistant Popup Mobile */
+        .grok-popup-mobile {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #000000;
+            border-top: 1px solid #2f3336;
+            border-radius: 20px 20px 0 0;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            max-height: 80vh;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .grok-popup-mobile.show {
+            display: flex;
+            transform: translateY(0);
+        }
+        
+        .grok-popup-handle {
+            width: 40px;
+            height: 4px;
+            background: #71767b;
+            border-radius: 2px;
+            margin: 8px auto;
+        }
+        
+        .grok-popup-header-mobile {
+            padding: 16px 20px;
+            border-bottom: 1px solid #2f3336;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .grok-popup-icon-mobile {
+            width: 24px;
+            height: 24px;
+            background: #ffffff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .grok-popup-title-mobile {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            flex: 1;
+        }
+        
+        .grok-popup-close-mobile {
+            background: none;
+            border: none;
+            color: #71767b;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 18px;
+        }
+        
+        .grok-popup-body-mobile {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .grok-input-label-mobile {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .grok-textarea-mobile {
+            width: 100%;
+            background: #202327;
+            border: 1px solid #2f3336;
+            border-radius: 12px;
+            padding: 16px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+        
+        .grok-textarea-mobile:focus {
+            border-color: #1da1f2;
+        }
+        
+        .grok-textarea-mobile::placeholder {
+            color: #71767b;
+        }
+        
+        .tone-selector-mobile {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        
+        .tone-btn-mobile {
+            flex: 1;
+            padding: 12px 16px;
+            background: #202327;
+            border: 1px solid #2f3336;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #71767b;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .tone-btn-mobile:hover {
+            border-color: #1da1f2;
+            color: #ffffff;
+        }
+        
+        .tone-btn-mobile.selected {
+            border-color: #1da1f2;
+            background: rgba(29, 161, 242, 0.1);
+            color: #1da1f2;
+        }
+        
+        .generate-btn-mobile {
+            width: 100%;
+            background: #1da1f2;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .generate-btn-mobile:hover {
+            background: #1991da;
+        }
+        
+        .generate-btn-mobile:disabled {
+            background: #2f3336;
+            color: #71767b;
+            cursor: not-allowed;
+        }
+        
+        /* Notification Mobile */
+        .notification-mobile {
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            right: 20px;
+            background: #1da1f2;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 2000;
+            transform: translateY(-100px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification-mobile.show {
+            transform: translateY(0);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            height: 60px;
+            background: #000000;
+            border-top: 1px solid #2f3336;
+            display: none;
+            align-items: center;
+            justify-content: space-around;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #71767b;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-btn.active {
+            color: #1da1f2;
+        }
+        
+        .nav-btn-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 414px) {
+            body {
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+            
+            .mobile-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+                box-shadow: none;
+                max-width: none;
+            }
+            
+            .screen {
+                border-radius: 0;
+                height: 100vh;
+            }
+            
+            .sidebar-drawer {
+                width: 70%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="screen">
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-left">
+                    <span>9:41</span>
+                </div>
+                <div class="status-right">
+                    <div class="signal-dots">
+                        <div class="signal-dot"></div>
+                        <div class="signal-dot"></div>
+                        <div class="signal-dot"></div>
+                        <div class="signal-dot"></div>
+                    </div>
+                    <svg width="16" height="12" viewBox="0 0 24 24" fill="#ffffff">
+                        <path d="M2 17h20v2H2zm1.15-4.05L4 11.47l.85 1.48c.3.52.75.93 1.32 1.18.56.25 1.18.25 1.74 0 .57-.25 1.02-.66 1.32-1.18L10 11.47l.77 1.48c.3.52.75.93 1.32 1.18.56.25 1.18.25 1.74 0 .57-.25 1.02-.66 1.32-1.18L16 11.47l.85 1.48c.3.52.75.93 1.32 1.18.56.25 1.18.25 1.74 0 .57-.25 1.02-.66 1.32-1.18L22 11.47V10c-.68 0-1.31-.25-1.82-.7-.52-.45-.83-1.05-.83-1.7s.31-1.25.83-1.7C20.69 5.45 21.32 5.2 22 5.2V4c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v6.47l.15.98z"/>
+                    </svg>
+                    <div class="battery">
+                        <div class="battery-fill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Header -->
+            <div class="mobile-header">
+                <div class="header-left">
+                    <div class="profile-avatar-mobile" onclick="openSidebar()">
+                        EM
+                        <div class="x-mail-badge-mobile">
+                            <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="header-title">XMail</div>
+                </div>
+                <div class="header-right">
+                    <button class="header-btn" onclick="openComposeMobile()" title="Compose">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                    </button>
+                    <button class="header-btn" onclick="openGrokPopupMobile()" title="Grok AI Assistant">
+                        <svg width="20" height="20" viewBox="0 0 512 512" fill="currentColor">
+                            <defs>
+                                <mask id="planet-mask-header">
+                                    <rect width="512" height="512" fill="white"/>
+                                    <circle cx="256" cy="256" r="120" fill="black"/>
+                                </mask>
+                            </defs>
+                            <circle cx="256" cy="256" r="200" fill="currentColor" mask="url(#planet-mask-header)"/>
+                            <path d="M150 100 L280 200 L220 220 L350 350 L200 250 L260 230 Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar-mobile">
+                <div class="search-container-mobile">
+                    <div class="search-icon-mobile">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                    </div>
+                    <input type="text" class="search-input-mobile" placeholder="Search emails...">
+                </div>
+            </div>
+            
+            <!-- Email List -->
+            <div class="email-list-mobile">
+                <div class="email-item-mobile unread" onclick="openEmailMobile(this)" data-email="tim-cook">
+                    <div class="email-header-mobile">
+                        <div class="sender-avatar-mobile">TC</div>
+                        <div class="email-meta-mobile">
+                            <div class="sender-info-mobile">
+                                <span class="sender-name-mobile">Tim Cook</span>
+                                <span class="verified-badge-mobile">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </span>
+                                <span class="email-time-mobile">2m</span>
+                            </div>
+                            <div class="email-subject-mobile">Re: Apple & Tesla Partnership Discussion</div>
+                            <div class="email-preview-mobile">Elon, I've been thinking about our conversation regarding the potential collaboration between Apple and Tesla. The synergies could be incredible and I believe we could create something truly revolutionary together...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="email-item-mobile">
+                    <div class="email-header-mobile">
+                        <div class="sender-avatar-mobile">GS</div>
+                        <div class="email-meta-mobile">
+                            <div class="sender-info-mobile">
+                                <span class="sender-name-mobile">Gwynne Shotwell</span>
+                                <span class="verified-badge-mobile">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </span>
+                                <span class="email-time-mobile">1h</span>
+                            </div>
+                            <div class="email-subject-mobile">Starship Launch Update - Mission Success!</div>
+                            <div class="email-preview-mobile">Elon, incredible news! The Starship test flight exceeded all expectations. Landing was perfect, and we're ready for the next phase of Mars mission planning...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="email-item-mobile unread">
+                    <div class="email-header-mobile">
+                        <div class="sender-avatar-mobile">XE</div>
+                        <div class="email-meta-mobile">
+                            <div class="sender-info-mobile">
+                                <span class="sender-name-mobile">X Engineering</span>
+                                <span class="verified-badge-mobile">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                </span>
+                                <span class="email-time-mobile">3h</span>
+                            </div>
+                            <div class="email-subject-mobile">Grok 2.0 Performance Metrics</div>
+                            <div class="email-preview-mobile">The latest Grok update is showing remarkable improvements in response time and accuracy. User engagement is up 340% and the AI responses are more contextual than ever...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar Drawer -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="sidebar-drawer" id="sidebarDrawer">
+        <div class="sidebar-header">
+            <div class="sidebar-profile">
+                <div class="sidebar-avatar">
+                    EM
+                    <div class="sidebar-avatar-badge">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="sidebar-profile-details">
+                    <div class="sidebar-name">
+                        Elon Musk
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#1da1f2">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                    </div>
+                    <div class="sidebar-email">elonmusk@x.com</div>
+                </div>
+            </div>
+            <div class="sidebar-settings" onclick="openSettings()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.82,11.69,4.82,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+                </svg>
+            </div>
+        </div>
+        
+        <!-- Default Folders -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Default</div>
+            <div class="sidebar-item active" onclick="selectFolder(this, 'inbox')">
+                <div class="sidebar-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                </div>
+                <div class="sidebar-text">All Emails</div>
+                <div class="sidebar-count">247</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'spam')">
+                <div class="sidebar-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 6l3 10.5h12L21 6H3zm14.5 6L15 8.5 12 11 9 8.5 6.5 12 4.5 6h15l-2 6z"/>
+                    </svg>
+                </div>
+                <div class="sidebar-text">Spam</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'sent')">
+                <div class="sidebar-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </div>
+                <div class="sidebar-text">Sent</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'stored')">
+                <div class="sidebar-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                    </svg>
+                </div>
+                <div class="sidebar-text">Stored</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'calendar')">
+                <div class="sidebar-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                    </svg>
+                </div>
+                <div class="sidebar-text">Calendar</div>
+            </div>
+        </div>
+        
+        <!-- Custom Folders -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Custom Folders</div>
+            <div class="add-folder-btn" onclick="addFolder()">
+                <span>+</span>
+                <span>Add Folder</span>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'spacex')">
+                <div class="sidebar-icon">
+                    <div class="sidebar-dot"></div>
+                </div>
+                <div class="sidebar-text">SpaceX</div>
+                <div class="sidebar-count">89</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'tesla')">
+                <div class="sidebar-icon">
+                    <div class="sidebar-dot"></div>
+                </div>
+                <div class="sidebar-text">Tesla</div>
+                <div class="sidebar-count">156</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'neuralink')">
+                <div class="sidebar-icon">
+                    <div class="sidebar-dot"></div>
+                </div>
+                <div class="sidebar-text">Neuralink</div>
+                <div class="sidebar-count">34</div>
+            </div>
+        </div>
+        
+        <!-- Contacts -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Contacts</div>
+            <div class="add-folder-btn" onclick="addContact()">
+                <span>+</span>
+                <span>Add Contacts</span>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'tim-cook')">
+                <div class="sidebar-icon">
+                    <div class="contact-avatar tim">TC</div>
+                </div>
+                <div class="sidebar-text">Tim Cook</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'jeff-bezos')">
+                <div class="sidebar-icon">
+                    <div class="contact-avatar jeff">JB</div>
+                </div>
+                <div class="sidebar-text">Jeff Bezos</div>
+            </div>
+            <div class="sidebar-item" onclick="selectFolder(this, 'gwynne')">
+                <div class="sidebar-icon">
+                    <div class="contact-avatar gwynne">GS</div>
+                </div>
+                <div class="sidebar-text">Gwynne Shotwell</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Action Button -->
+    <button class="fab-mobile" onclick="openComposeMobile()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+    </button>
+    
+    <!-- Email Detail View -->
+    <div class="email-detail-mobile" id="emailDetailMobile">
+        <div class="email-detail-header-mobile">
+            <button class="back-btn-mobile" onclick="closeEmailMobile()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </button>
+            <div class="email-detail-title-mobile">
+                <div class="sender-name-mobile">Tim Cook</div>
+            </div>
+        </div>
+        
+        <div class="email-detail-content-mobile">
+            <div class="email-full-header-mobile">
+                <div class="email-full-subject-mobile">Re: Apple & Tesla Partnership Discussion</div>
+                <div class="email-full-meta-mobile">
+                    <div class="sender-avatar-mobile">TC</div>
+                    <div>
+                        <div class="sender-name-mobile">Tim Cook</div>
+                        <div style="font-size: 13px; color: #71767b;">tim_cook@x.com</div>
+                    </div>
+                    <div class="email-time-mobile">2 minutes ago</div>
+                </div>
+            </div>
+            
+            <div class="email-full-body-mobile">
+                <p>Hi Elon,</p>
+                <p>I hope this message finds you well. I've been thinking about our conversation regarding the potential collaboration between Apple and Tesla, and I believe the synergies could be incredible.</p>
+                <p>After discussing with our teams, we see significant opportunities in:</p>
+                <ul>
+                    <li>Advanced battery technology and energy storage solutions</li>
+                    <li>Autonomous vehicle software integration</li>
+                    <li>Manufacturing excellence and supply chain optimization</li>
+                    <li>Sustainable transportation ecosystem development</li>
+                </ul>
+                <p>I think we could create something truly revolutionary together. Would you be available for a more detailed discussion next week? Our teams are excited about the possibilities.</p>
+                <p>Looking forward to your thoughts.</p>
+                <p>Best regards,<br>Tim</p>
+            </div>
+        </div>
+        
+        <div class="reply-section-mobile">
+            <div class="reply-input-container-mobile">
+                <textarea class="reply-input-mobile" id="replyInputMobile" placeholder="Write your reply..." rows="1"></textarea>
+                <div class="reply-actions-mobile">
+                    <button class="reply-btn-mobile" title="Attach file">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/>
+                        </svg>
+                    </button>
+                    <button class="reply-btn-mobile grok-btn-mobile" onclick="openGrokPopupMobile()" title="Grok AI Assistant">
+                        <svg width="16" height="16" viewBox="0 0 512 512" fill="currentColor">
+                            <defs>
+                                <mask id="planet-mask-reply">
+                                    <rect width="512" height="512" fill="white"/>
+                                    <circle cx="256" cy="256" r="120" fill="black"/>
+                                </mask>
+                            </defs>
+                            <circle cx="256" cy="256" r="200" fill="currentColor" mask="url(#planet-mask-reply)"/>
+                            <path d="M150 100 L280 200 L220 220 L350 350 L200 250 L260 230 Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                    <button class="reply-btn-mobile send-btn-mobile" id="sendBtnMobile" onclick="sendReplyMobile()" disabled>Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Grok Assistant Popup -->
+    <div class="grok-popup-mobile" id="grokPopupMobile">
+        <div class="grok-popup-handle"></div>
+        <div class="grok-popup-header-mobile">
+            <div class="grok-popup-icon-mobile">
+                <svg width="16" height="16" viewBox="0 0 512 512" fill="currentColor">
+                    <defs>
+                        <mask id="planet-mask-popup-mobile">
+                            <rect width="512" height="512" fill="white"/>
+                            <circle cx="256" cy="256" r="120" fill="black"/>
+                        </mask>
+                    </defs>
+                    <circle cx="256" cy="256" r="200" fill="currentColor" mask="url(#planet-mask-popup-mobile)"/>
+                    <path d="M150 100 L280 200 L220 220 L350 350 L200 250 L260 230 Z" fill="currentColor"/>
+                </svg>
+            </div>
+            <div class="grok-popup-title-mobile">Grok AI</div>
+            <button class="grok-popup-close-mobile" onclick="closeGrokPopupMobile()">&times;</button>
+        </div>
+        
+        <div class="grok-popup-body-mobile">
+            <label class="grok-input-label-mobile">What would you like to communicate?</label>
+            <textarea class="grok-textarea-mobile" id="grokInputMobile" placeholder="• Key points you want to make
+• Important details to include
+• Context and background information
+• Meeting requests or next steps"></textarea>
+            
+            <div class="tone-selector-mobile">
+                <button class="tone-btn-mobile selected" data-tone="professional">Professional</button>
+                <button class="tone-btn-mobile" data-tone="friendly">Friendly</button>
+                <button class="tone-btn-mobile" data-tone="brief">Brief</button>
+            </div>
+            
+            <button class="generate-btn-mobile" onclick="generateTextMobile()">Generate Email</button>
+        </div>
+    </div>
+    
+    <script>
+        let selectedToneMobile = 'professional';
+        
+        // Email interactions
+        function openEmailMobile(emailElement) {
+            emailElement.classList.remove('unread');
+            emailElement.classList.add('read');
+            document.getElementById('emailDetailMobile').classList.add('show');
+        }
+        
+        function closeEmailMobile() {
+            document.getElementById('emailDetailMobile').classList.remove('show');
+        }
+        
+        // Reply input auto-resize and send button state
+        const replyInputMobile = document.getElementById('replyInputMobile');
+        const sendBtnMobile = document.getElementById('sendBtnMobile');
+        
+        if (replyInputMobile) {
+            replyInputMobile.addEventListener('input', function() {
+                // Auto-resize textarea
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+                
+                // Enable/disable send button
+                sendBtnMobile.disabled = !this.value.trim();
+            });
+        }
+        
+        // Grok popup functions
+        function openGrokPopupMobile() {
+            document.getElementById('grokPopupMobile').classList.add('show');
+        }
+        
+        function closeGrokPopupMobile() {
+            document.getElementById('grokPopupMobile').classList.remove('show');
+        }
+        
+        // Tone selector
+        document.querySelectorAll('.tone-btn-mobile').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tone-btn-mobile').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedToneMobile = this.dataset.tone;
+            });
+        });
+        
+        // AI Text Generator for Mobile
+        function generateTextMobile() {
+            const input = document.getElementById('grokInputMobile').value.trim();
+            if (!input) {
+                showNotificationMobile('Please enter your key points first', 'error');
+                return;
+            }
+            
+            const generateBtn = document.querySelector('.generate-btn-mobile');
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generating...';
+            
+            setTimeout(() => {
+                const generatedText = generateAITextMobile(input, selectedToneMobile);
+                
+                // Insert into reply input if email is open
+                if (replyInputMobile && document.getElementById('emailDetailMobile').classList.contains('show')) {
+                    replyInputMobile.value = generatedText;
+                    replyInputMobile.style.height = 'auto';
+                    replyInputMobile.style.height = Math.min(replyInputMobile.scrollHeight, 120) + 'px';
+                    sendBtnMobile.disabled = false;
+                }
+                
+                closeGrokPopupMobile();
+                showNotificationMobile('Email generated successfully by Grok AI!', 'success');
+                
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate Email';
+                document.getElementById('grokInputMobile').value = '';
+            }, 1500);
+        }
+        
+        // Improved AI Text Generation Engine using Grok AI
+        function generateAITextMobile(input, tone) {
+            // Initialize Grok AI if not already done
+            if (!window.grokAI) {
+                window.grokAI = new GrokAI();
+            }
+            
+            try {
+                // Use the Grok AI system to generate email
+                const generatedEmail = window.grokAI.generateEmail(input, tone);
+                return generatedEmail;
+            } catch (error) {
+                console.error('Grok AI generation failed:', error);
+                // Fallback to simple formatting
+                return this.generateFallbackEmail(input, tone);
+            }
+        }
+        
+        // Fallback email generation
+        function generateFallbackEmail(input, tone) {
+            const points = input.split('\n').filter(line => line.trim()).map(line => line.replace(/^[•\-\*]\s*/, ''));
+            const recipient = getRecipientFromContext();
+            
+            const templates = {
+                professional: {
+                    greeting: `Hi ${recipient},\n\nI hope this message finds you well.`,
+                    closing: "Best regards,\nElon Musk"
+                },
+                friendly: {
+                    greeting: `Hey ${recipient}!\n\nHope you're doing great.`,
+                    closing: "Cheers,\nElon"
+                },
+                brief: {
+                    greeting: `${recipient},`,
+                    closing: "Thanks,\nElon"
+                }
+            };
+            
+            const template = templates[tone] || templates.professional;
+            const content = points.map(point => `• ${point}`).join('\n');
+            
+            return `${template.greeting}\n\n${content}\n\n${template.closing}`;
+        }
+        
+        function getRecipientFromContext() {
+            const emailDetailOpen = document.getElementById('emailDetailMobile').classList.contains('show');
+            if (emailDetailOpen) {
+                const senderName = document.querySelector('.email-detail-title-mobile .sender-name-mobile')?.textContent;
+                if (senderName) {
+                    return senderName.split(' ')[0]; // First name only
+                }
+            }
+            return 'Tim'; // Default fallback
+        }
+        
+        // Grok AI Class (embedded for mobile)
+        class GrokAI {
+            constructor() {
+                this.selectedTone = 'professional';
+                this.userProfile = {
+                    name: 'Elon Musk',
+                    company: 'X Corp',
+                    title: 'Chief Executive Officer'
+                };
+            }
+
+            generateEmail(bulletPoints, tone = 'professional', recipientName = null) {
+                if (!bulletPoints || bulletPoints.trim() === '') {
+                    throw new Error('Please provide bullet points for email generation');
+                }
+
+                const points = this.parseBulletPoints(bulletPoints);
+                const recipient = recipientName || this.detectRecipient();
+                const email = this.buildEmailStructure(points, tone, recipient);
+                
+                return email;
+            }
+
+            parseBulletPoints(input) {
+                return input
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .map(line => line.replace(/^[•\-\*\+]\s*/, ''))
+                    .filter(point => point.length > 0);
+            }
+
+            detectRecipient() {
+                const emailDetailOpen = document.getElementById('emailDetailMobile')?.classList.contains('show');
+                if (emailDetailOpen) {
+                    const senderElement = document.querySelector('.email-detail-title-mobile .sender-name-mobile');
+                    if (senderElement) {
+                        return senderElement.textContent.split(' ')[0];
+                    }
+                }
+                return 'Tim';
+            }
+
+            buildEmailStructure(points, tone, recipient) {
+                const templates = this.getEmailTemplates(recipient);
+                const template = templates[tone] || templates.professional;
+                
+                const greeting = template.greeting;
+                const mainContent = this.generateMainContent(points, tone);
+                const closing = template.closing;
+                
+                return [greeting, '', mainContent, '', closing].join('\n');
+            }
+
+            getEmailTemplates(recipient) {
+                return {
+                    professional: {
+                        greeting: `Hi ${recipient},\n\nI hope this message finds you well.`,
+                        closing: `I look forward to hearing your thoughts on this.\n\nBest regards,\n${this.userProfile.name}`
+                    },
+                    friendly: {
+                        greeting: `Hey ${recipient}!\n\nHope you're doing great.`,
+                        closing: `Let me know what you think!\n\nCheers,\n${this.userProfile.name}`
+                    },
+                    brief: {
+                        greeting: `${recipient},`,
+                        closing: `Thanks.\n\n${this.userProfile.name}`
+                    }
+                };
+            }
+
+            generateMainContent(points, tone) {
+                if (points.length === 0) return '';
+
+                const context = this.analyzeContext(points);
+                const intro = this.generateIntro(context, tone);
+                const content = this.formatPointsAsProse(points, tone);
+                const conclusion = this.generateConclusion(context, tone);
+                
+                return [intro, content, conclusion].filter(Boolean).join('\n\n');
+            }
+
+            analyzeContext(points) {
+                const allText = points.join(' ').toLowerCase();
+                
+                const contexts = {
+                    meeting: ['meeting', 'discuss', 'call', 'schedule', 'availability'],
+                    partnership: ['partnership', 'collaboration', 'work together', 'joint'],
+                    update: ['update', 'progress', 'status', 'completed', 'finished'],
+                    request: ['please', 'could you', 'would you', 'need', 'require'],
+                    feedback: ['feedback', 'thoughts', 'opinion', 'review', 'input']
+                };
+
+                for (const [contextType, keywords] of Object.entries(contexts)) {
+                    if (keywords.some(keyword => allText.includes(keyword))) {
+                        return contextType;
+                    }
+                }
+                
+                return 'general';
+            }
+
+            generateIntro(context, tone) {
+                const intros = {
+                    professional: {
+                        meeting: "I wanted to reach out regarding our upcoming discussion.",
+                        partnership: "I've been reflecting on the collaboration opportunities we discussed.",
+                        update: "I wanted to provide you with an update on our recent initiatives.",
+                        request: "I'm writing to request your assistance with a few items.",
+                        feedback: "I would greatly appreciate your input on the following matters.",
+                        general: "I wanted to touch base with you on several important points."
+                    },
+                    friendly: {
+                        meeting: "Looking forward to catching up! A few things I wanted to discuss:",
+                        partnership: "Been thinking about our conversation on working together. Here's what I'm thinking:",
+                        update: "Quick update on what we've been working on:",
+                        request: "Hope you don't mind me asking for a quick favor:",
+                        feedback: "Would love to get your take on some ideas:",
+                        general: "Wanted to share a few thoughts with you:"
+                    },
+                    brief: {
+                        meeting: "Meeting agenda:",
+                        partnership: "Partnership points:",
+                        update: "Update:",
+                        request: "Request:",
+                        feedback: "Feedback needed:",
+                        general: "Key points:"
+                    }
+                };
+
+                return intros[tone]?.[context] || intros[tone]?.general || '';
+            }
+
+            formatPointsAsProse(points, tone) {
+                if (tone === 'brief') {
+                    return points.map(point => `• ${point}`).join('\n');
+                }
+
+                if (points.length === 1) {
+                    return this.capitalizeProperly(points[0]) + '.';
+                }
+
+                if (points.length === 2) {
+                    return `${this.capitalizeProperly(points[0])}. Additionally, ${points[1].toLowerCase()}.`;
+                }
+
+                const formatted = points.map((point, index) => {
+                    const capitalizedPoint = this.capitalizeProperly(point);
+                    if (index === 0) {
+                        return capitalizedPoint;
+                    } else if (index === points.length - 1) {
+                        return `Finally, ${point.toLowerCase()}`;
+                    } else {
+                        return `Additionally, ${point.toLowerCase()}`;
+                    }
+                });
+
+                return formatted.join('. ') + '.';
+            }
+
+            generateConclusion(context, tone) {
+                const conclusions = {
+                    professional: {
+                        meeting: "Would you be available for a call next week to discuss these items in detail?",
+                        partnership: "I believe this could be truly revolutionary. Shall we set up a meeting to explore this further?",
+                        update: "Please let me know if you have any questions or need additional information.",
+                        request: "I would greatly appreciate your help with these matters.",
+                        feedback: "Your insights would be invaluable in moving forward.",
+                        general: "I'd love to hear your thoughts on these points."
+                    },
+                    friendly: {
+                        meeting: "Let me know when works best for you!",
+                        partnership: "Think we could do something amazing together. Coffee next week?",
+                        update: "Let me know if you want more details on any of this!",
+                        request: "Really appreciate any help you can provide!",
+                        feedback: "Would love to hear what you think!",
+                        general: "What do you think?"
+                    },
+                    brief: {
+                        meeting: "Please confirm availability.",
+                        partnership: "Interested in discussing?",
+                        update: "Questions welcome.",
+                        request: "Please advise.",
+                        feedback: "Your thoughts?",
+                        general: "Please confirm."
+                    }
+                };
+
+                return conclusions[tone]?.[context] || '';
+            }
+
+            capitalizeProperly(text) {
+                return text.charAt(0).toUpperCase() + text.slice(1);
+            }
+        }
+        
+        // Send reply
+        function sendReplyMobile() {
+            const replyText = replyInputMobile.value.trim();
+            if (!replyText) return;
+            
+            sendBtnMobile.disabled = true;
+            sendBtnMobile.textContent = 'Sending...';
+            
+            setTimeout(() => {
+                showNotificationMobile('Reply sent successfully!', 'success');
+                replyInputMobile.value = '';
+                replyInputMobile.style.height = 'auto';
+                sendBtnMobile.disabled = true;
+                sendBtnMobile.textContent = 'Send';
+                closeEmailMobile();
+            }, 1000);
+        }
+        
+        // Notification system for mobile
+        function showNotificationMobile(message, type = 'info') {
+            const existing = document.querySelector('.notification-mobile');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification-mobile';
+            notification.textContent = message;
+            
+            if (type === 'error') {
+                notification.style.background = '#dc2626';
+            } else if (type === 'success') {
+                notification.style.background = '#16a34a';
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebarOverlay').classList.add('show');
+            document.getElementById('sidebarDrawer').classList.add('show');
+        }
+        
+        function closeSidebar() {
+            document.getElementById('sidebarOverlay').classList.remove('show');
+            document.getElementById('sidebarDrawer').classList.remove('show');
+        }
+        
+        function selectFolder(element, folderId) {
+            // Update sidebar selection
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Update bottom nav if needed
+            if (folderId === 'inbox') {
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.nav-btn').classList.add('active');
+            }
+            
+            // Close sidebar
+            closeSidebar();
+            
+            // Show notification of folder change
+            showNotificationMobile(`Switched to ${element.querySelector('.sidebar-text').textContent}`, 'info');
+        }
+        
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Close popups on outside click
+        document.addEventListener('click', function(e) {
+            const grokPopup = document.getElementById('grokPopupMobile');
+            if (grokPopup.classList.contains('show') && !grokPopup.contains(e.target) && !e.target.closest('.grok-btn-mobile') && !e.target.closest('.header-btn')) {
+                closeGrokPopupMobile();
+            }
+        });
+        
+        // Handle mobile viewport
+        function setViewportHeight() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        
+        window.addEventListener('resize', setViewportHeight);
+        setViewportHeight();
+        
+        // Compose function (placeholder)
+        function openComposeMobile() {
+            showNotificationMobile('Opening compose...', 'info');
+        }
+        
+        // Settings function
+        function openSettings() {
+            showNotificationMobile('Settings coming soon!', 'info');
+        }
+        
+        // Add folder and contact functions
+        function addFolder() {
+            showNotificationMobile('Add Folder feature coming soon!', 'info');
+            closeSidebar();
+        }
+        
+        function addContact() {
+            showNotificationMobile('Add Contact feature coming soon!', 'info');
+            closeSidebar();
+        }
+        
+        // Swipe gestures for better mobile UX
+        let startY = 0;
+        let startX = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            startY = e.touches[0].clientY;
+            startX = e.touches[0].clientX;
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            const endY = e.changedTouches[0].clientY;
+            const endX = e.changedTouches[0].clientX;
+            const diffY = startY - endY;
+            const diffX = startX - endX;
+            
+            // Swipe up to open Grok popup
+            if (diffY > 100 && Math.abs(diffX) < 50) {
+                const grokPopup = document.getElementById('grokPopupMobile');
+                if (!grokPopup.classList.contains('show')) {
+                    openGrokPopupMobile();
+                }
+            }
+            
+            // Swipe down to close Grok popup
+            if (diffY < -100 && Math.abs(diffX) < 50) {
+                const grokPopup = document.getElementById('grokPopupMobile');
+                if (grokPopup.classList.contains('show')) {
+                    closeGrokPopupMobile();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
